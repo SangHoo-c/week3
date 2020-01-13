@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FFFFFF</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#444455</color>
+    <color name="backgroundfragment">#26262626</color>
+
+    <color name="white">#EEEEEE</color>
+    <color name="white_grey">#e9ecef</color>
+    <color name="transparent">#00000000</color>
+    <color name="black">#222222</color>
+    <color name="splash">#c7353e</color>
+    <color name="sky_blue">#87cefa</color>
+    <color name="dark_grey">#495057</color>
+
+
+</resources>

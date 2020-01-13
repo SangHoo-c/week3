@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:fillViewport="true">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".LoginActivity"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:background="@color/colorPrimaryDark"
+            app:cardCornerRadius="125dp"
+            app:cardPreventCornerOverlap="false">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_launcher_foreground" />
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/blacksword"
+            android:text="Life is a journey"
+            android:textSize="40dp"
+            android:textColor="#333333"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginTop="25dp"
+            android:layout_marginLeft="46dp"
+            android:text="Email"
+            android:textSize="20dp"
+            android:textStyle="bold"/>
+
+        <EditText
+            android:id="@+id/edit_email"
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="41dp"
+            android:inputType="textEmailAddress"
+            android:hint="Please enter your email"
+            android:textColorHint="#808080"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="46dp"
+            android:text="Password"
+            android:textSize="20dp"
+            android:textStyle="bold"/>
+
+        <EditText
+            android:id="@+id/edit_password"
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="41dp"
+            android:inputType="textPassword"
+            android:hint="Please enter your password"
+            android:textColorHint="#808080"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/btn_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/grid_item_radius_3"
+                android:gravity="center"
+                android:text="LOGIN"
+                android:textSize="20dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="25dp"></Button>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                />
+
+            <Button
+                android:layout_weight="1"
+                android:id="@+id/btn_to_register"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:background="@drawable/grid_item_radius_3"
+                android:gravity="center"
+                android:text="REGISTER"
+                android:textSize="20dp"
+                android:layout_marginRight="25dp"></Button>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
