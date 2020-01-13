@@ -33,10 +33,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-
-        Intent intent = getIntent();
-        String accountName = intent.getStringExtra("Name");
-
         //frag1 = new FragExample(accountName);
         frag1 = new FragExample();
         frag2 = new FragExample();

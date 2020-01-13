@@ -2,7 +2,9 @@ package com.example.myapplication.login;
 
 import android.app.Activity;
 import android.content.ContentUris;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -22,17 +24,18 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import com.example.myapplication.R;
-import com.example.myapplication.server.AccountClient;
-import com.example.myapplication.server.IRetrofit;
+import com.example.myapplication.server.LoginData;
+import com.example.myapplication.server.MbtiData;
+import com.example.myapplication.server.RetrofitConnection;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
-import retrofit2.Retrofit;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 
 public class RegisterActivity extends Activity {
     ImageView register_photo;
@@ -42,17 +45,12 @@ public class RegisterActivity extends Activity {
     String imgPath = "";
     String photo_uri = "";
 
-
-    CompositeDisposable compositeDisposable = new CompositeDisposable();
-    IRetrofit iRetrofit;
+    RetrofitConnection retrofitConnection = new RetrofitConnection();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-
-        Retrofit accountClient = AccountClient.getInstance();
-        iRetrofit = accountClient.create(IRetrofit.class);
 
         register_photo = (ImageView) findViewById(R.id.modify_image_button);
         register_photo.setOnClickListener(new View.OnClickListener() {
@@ -85,7 +83,6 @@ public class RegisterActivity extends Activity {
 
                 registerUser(photo_uri,
                         register_name.getText().toString(),
-                        register_phone_number.getText().toString().replace("-", ""),
                         register_email.getText().toString(),
                         register_password.getText().toString(),
                         register_address.getText().toString()
@@ -94,12 +91,9 @@ public class RegisterActivity extends Activity {
         });
     }
 
-    private void registerUser(String photo_uri, String name, String phone_number, String email, String password,String address) {
+    private void registerUser(String photo_uri, String name, String email, String password,String address) {
         if (name.isEmpty()) {
             Toast.makeText(RegisterActivity.this, "Name cannot be empty.", Toast.LENGTH_SHORT).show();
-            return;
-        } else if (phone_number.isEmpty()) {
-            Toast.makeText(RegisterActivity.this, "Phone number cannot be empty.", Toast.LENGTH_SHORT).show();
             return;
         } else if (email.isEmpty()) {
             Toast.makeText(RegisterActivity.this, "Email cannot be empty", Toast.LENGTH_SHORT).show();
@@ -108,8 +102,34 @@ public class RegisterActivity extends Activity {
             Toast.makeText(RegisterActivity.this, "Password cannot be empty", Toast.LENGTH_SHORT).show();
         }  else if (address.isEmpty()) {
             Toast.makeText(RegisterActivity.this, "address cannot be empty", Toast.LENGTH_SHORT).show();
+        } else {
+            LoginData data = new LoginData();
+            data.setAddress(address);
+            data.setId(email);
+            data.setMbti(Collections.emptyList());
+            data.setPasswd(password);
+            data.setName(name);
+
+            retrofitConnection.server.join(data).enqueue(new Callback<LoginData>() {
+                @Override
+                public void onResponse(Call<LoginData> call, Response<LoginData> response) {
+                    if (response.isSuccessful()) {
+                        Toast.makeText(RegisterActivity.this, response.body().getName() + "님 가입을 환영합니다.", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                    else {
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<LoginData> call, Throwable t) {
+
+                }
+            });
         }
-        compositeDisposable.add(iRetrofit.registerUser(photo_uri, name, phone_number, email, password, address)
+
+        /*compositeDisposable.add(iRetrofit.registerUser(photo_uri, name, phone_number, email, password, address)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<String>() {
@@ -117,7 +137,7 @@ public class RegisterActivity extends Activity {
                     public void accept(String response) throws Exception {
                         Toast.makeText(RegisterActivity.this, "" + response, Toast.LENGTH_SHORT).show();
                     }
-                }));
+                }));*/
     }
 
     @Override

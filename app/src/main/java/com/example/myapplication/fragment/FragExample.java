@@ -17,11 +17,18 @@ import com.example.myapplication.R;
 public class FragExample extends Fragment {
 
     private Context mContext;
-    SharedPreferences pref = requireContext().getSharedPreferences("pref",Context.MODE_PRIVATE);
-    String accountName = pref.getString("key1", "hi");
+    SharedPreferences pref;
+    String accountName;
 
     TextView textView1;
 
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        SharedPreferences pref = requireContext().getSharedPreferences("pref", Context.MODE_PRIVATE);
+        accountName = pref.getString("key1", "");
+    }
 
     @Nullable
     @Override
