@@ -6,6 +6,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:fillViewport="true">
     <LinearLayout
+        android:background="@drawable/grad_color"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -23,11 +24,12 @@
             app:cardPreventCornerOverlap="false">
 
             <ImageView
+                android:id="@+id/image_login"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_launcher_foreground" />
+                android:src="@drawable/icon_login" />
         </androidx.cardview.widget.CardView>
 
         <TextView
@@ -36,10 +38,10 @@
             android:layout_gravity="center_horizontal"
             android:gravity="center"
             android:layout_marginTop="10dp"
-            android:fontFamily="@font/blacksword"
-            android:text="Life is a journey"
+
+            android:text="WHOEVER"
             android:textSize="40dp"
-            android:textColor="#333333"
+            android:textColor="#eeeeee"
             android:textStyle="bold" />
 
         <TextView
@@ -49,20 +51,24 @@
             android:layout_marginTop="25dp"
             android:layout_marginLeft="46dp"
             android:text="Email"
+            android:textColor="#eeeeee"
             android:textSize="20dp"
             android:textStyle="bold"/>
 
         <EditText
+            android:textColor="#eeeeee"
             android:id="@+id/edit_email"
-            android:layout_width="280dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="41dp"
+            android:layout_marginRight="41dp"
             android:inputType="textEmailAddress"
             android:hint="Please enter your email"
             android:textColorHint="#808080"
             />
 
         <TextView
+            android:textColor="#eeeeee"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
@@ -73,52 +79,46 @@
             android:textStyle="bold"/>
 
         <EditText
+            android:textColor="#eeeeee"
             android:id="@+id/edit_password"
-            android:layout_width="280dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="41dp"
+            android:layout_marginRight="41dp"
             android:inputType="textPassword"
             android:hint="Please enter your password"
             android:textColorHint="#808080"
             />
 
-        <LinearLayout
+        <Button
+            android:layout_marginTop="15dp"
+            android:id="@+id/btn_login"
+            android:layout_marginLeft="41dp"
+            android:layout_marginRight="41dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="10dp"
-            android:gravity="center">
+            android:layout_height="wrap_content"
+            android:background="@drawable/grid_item_radius_4"
+            android:gravity="center"
+            android:textColor="#eeeeee"
 
-            <Button
-                android:id="@+id/btn_login"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/grid_item_radius_3"
-                android:gravity="center"
-                android:text="LOGIN"
-                android:textSize="20dp"
-                android:layout_weight="1"
-                android:layout_marginLeft="25dp"></Button>
+            android:text="LOGIN"
+            android:textSize="20dp"
+            />
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                />
+        <Button
+            android:layout_marginTop="5dp"
+            android:id="@+id/btn_to_register"
+            android:layout_marginLeft="41dp"
+            android:layout_marginRight="41dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:textColor="#eeeeee"
+            android:gravity="center"
+            android:text="Join us"
+            android:textSize="20dp"
+></Button>
 
-            <Button
-                android:layout_weight="1"
-                android:id="@+id/btn_to_register"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:background="@drawable/grid_item_radius_3"
-                android:gravity="center"
-                android:text="REGISTER"
-                android:textSize="20dp"
-                android:layout_marginRight="25dp"></Button>
-        </LinearLayout>
+
     </LinearLayout>
 </ScrollView>
