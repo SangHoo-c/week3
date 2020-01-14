@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "350702816148",
+    "firebase_url": "https://chat-bfdad.firebaseio.com",
+    "project_id": "chat-bfdad",
+    "storage_bucket": "chat-bfdad.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:350702816148:android:19c90f5562f4777894dd81",
+        "android_client_info": {
+          "package_name": "com.example.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "350702816148-kgrr7s6qr8pfr4blanlhdhtcudq4f20h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.myapplication",
+            "certificate_hash": "9048c76c8c375f58c18d6ba0f3c58e24b50597f8"
+          }
+        },
+        {
+          "client_id": "350702816148-9bdum6cg4j83b1gg9q1nmqcrstjth846.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJOsYytwEEabOgIlqTftNeX8NnX3nKoIk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "350702816148-9bdum6cg4j83b1gg9q1nmqcrstjth846.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
