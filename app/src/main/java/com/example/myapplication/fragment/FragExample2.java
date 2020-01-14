@@ -256,7 +256,7 @@ public class FragExample2 extends Fragment implements OnMapReadyCallback, Google
         cur_lat = findGeoPoint(getActivity(), ex1).getLatitude();
         cur_long = findGeoPoint(getActivity(), ex1).getLongitude();
 
-        textView1 = rootView.findViewById(R.id.textView);
+        //textView1 = rootView.findViewById(R.id.textView);
 //        textView2 = rootView.findViewById(R.id.textView2);
 //        textView1.setText(accountName + "2");
 //        button = (Button)rootView.findViewById(R.id.button1);

@@ -43,13 +43,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        SharedPreferences pref = getSharedPreferences("pref", Context.MODE_PRIVATE);
+        if (pref.getString("key1", "").isEmpty()) {
+            finish();
+        }
 
         Button logout = findViewById(R.id.logout);
         logout.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                SharedPreferences pref = getSharedPreferences("pref", Context.MODE_PRIVATE);
+
                 SharedPreferences.Editor editor = pref.edit();
                 editor.remove("key1");
                 editor.commit();

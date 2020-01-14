@@ -13,7 +13,7 @@ import retrofit2.http.Path;
 
 public interface RetrofitInterface {
 
-    @GET("login/user/:id")
+    @GET("login/user/{id}")
     Call<LoginData> getUser(@Path("id") String id);
 
     @POST("login/login")
@@ -21,4 +21,8 @@ public interface RetrofitInterface {
 
     @POST("login/join")
     Call<LoginData> join(@Body LoginData user);
+
+    @Multipart
+    @POST("login/user/{id}")
+    Call<MbtiData> testMbti(@Path("id") String id, @Part MultipartBody.Part file);
 }
