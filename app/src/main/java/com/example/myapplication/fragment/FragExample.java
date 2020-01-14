@@ -65,6 +65,9 @@ public class FragExample extends Fragment {
                 if (user_edit.getText().toString().equals("") || user_chat.getText().toString().equals(""))
                     return;
 
+
+
+
                 Intent intent = new Intent(getActivity(), ChatActivity.class);
                 intent.putExtra("chatName", user_chat.getText().toString());
                 intent.putExtra("userName", user_edit.getText().toString());

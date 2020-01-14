@@ -30,7 +30,7 @@
 
             <EditText
                 android:id="@+id/chat_edit"
-                android:layout_width="319dp"
+                android:layout_width="304dp"
                 android:layout_height="wrap_content" />
 
             <Button
