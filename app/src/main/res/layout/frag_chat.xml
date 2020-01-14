@@ -6,6 +6,7 @@
     tools:ignore="MissingDefaultResource">
 
 
+<<<<<<< HEAD
 <ImageView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -13,6 +14,8 @@
     android:src=""/>
 
 
+=======
+>>>>>>> 3077cae6909e335900f3a1b1f2b3967d784ce53a
     <ListView
         android:id="@+id/chat_list"
         android:layout_width="wrap_content"
@@ -48,7 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="49dp"
             android:background="@drawable/grid_item_radius_3"
-            android:hint="채팅방이름을 입력하세요"
+            android:hint="사용자 이름을 입력하세요"
             android:textColorHint="#808080" />
 
         <EditText
@@ -56,7 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="43dp"
             android:background="@drawable/grid_item_radius_3"
-            android:hint="사용자 이름을 입력하세요"
+            android:hint="채팅방 이름을 입력하세요"
             android:textColorHint="#808080" />
 
         <View

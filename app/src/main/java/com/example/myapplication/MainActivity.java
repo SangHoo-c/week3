@@ -18,7 +18,9 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.myapplication.fragment.FragExample;
 import com.example.myapplication.fragment.FragExample2;
+import com.example.myapplication.fragment.FragExample3;
 import com.example.myapplication.fragment.FragExample4;
+import com.example.myapplication.fragment.Fragment_example;
 import com.example.myapplication.login.LoginActivity;
 import com.google.android.material.tabs.TabLayout;
 
@@ -30,9 +32,10 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private ViewPagerAdapter adapter;
 
-    public FragExample frag1;
+    public FragExample3 frag1;
     public FragExample2 frag2;
-    public FragExample frag3;
+//    public FragExample frag3;
+    public Fragment_example frag3;
     public FragExample4 frag4;
 
 //    TextView main_text;
@@ -42,28 +45,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        Button logout = findViewById(R.id.logout);
-        logout.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                SharedPreferences pref = getSharedPreferences("pref", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = pref.edit();
-                editor.remove("key1");
-                editor.commit();
-                startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                finish();
-            }
-        });
+        SharedPreferences pref = getSharedPreferences("pref", Context.MODE_PRIVATE);
+        if (pref.getString("key1", "").isEmpty()) {
+            finish();
+        }
 
 //        main_text = findViewById(R.id.main_Text);
 //        main_text.setText("검사결과");
 
         //frag1 = new FragExample(accountName);
-        frag1 = new FragExample();
+        frag1 = new FragExample3();
         frag2 = new FragExample2();
-        frag3 = new FragExample();
+//        frag3 = new FragExample();
+        frag3 = new Fragment_example();
         frag4 = new FragExample4();
 
         tabLayout = (TabLayout) findViewById(R.id.tablayout_id);
@@ -118,6 +112,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case 2:
                 viewPager.setCurrentItem(2);
+                break;
+            case 3:
+                viewPager.setCurrentItem(3);
                 break;
         }
     }

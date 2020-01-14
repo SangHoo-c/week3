@@ -1,21 +1,30 @@
 package com.example.myapplication.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
+import com.example.myapplication.login.LoginActivity;
 import com.example.myapplication.server.MbtiData;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
@@ -25,6 +34,9 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,10 +78,15 @@ public class FragExample4 extends Fragment {
 
     PieChart pieChart;
     private ImageView user_image;
-    private TextView user_mbti, user_naem,  user_id;
+    private TextView user_mbti, user_naem,  user_id, extra_text;
     private int max_cnt =-100;
     private int idx_cnt = -1;
     private String idx_cnt_string ="";
+
+    Button logout_button, share_button;
+    private RelativeLayout container2;
+
+    private View rootView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -82,13 +99,80 @@ public class FragExample4 extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.activity_frag_ex4, null);
+        rootView = inflater.inflate(R.layout.activity_frag_ex4, null);
 
+        logout_button = rootView.findViewById(R.id.logout);
+        share_button = rootView.findViewById(R.id.share);
+
+        logout_button.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                SharedPreferences pref = requireContext().getSharedPreferences("pref", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.remove("key1");
+                editor.commit();
+                startActivity(new Intent(getActivity(), LoginActivity.class));
+                getActivity().finish();
+            }
+        });
+
+        container2 = (RelativeLayout)rootView.findViewById(R.id.for_share);
+        share_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "hi", Toast.LENGTH_SHORT).show();
+
+                container2.buildDrawingCache();
+                Bitmap captureView = container2.getDrawingCache();
+                FileOutputStream fos;
+                String strFolderPath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/DCIM/CAPTURE";
+                File folder = new File(strFolderPath);
+                if(!folder.exists()){
+                    folder.mkdirs();
+                }
+                String strFilePath = strFolderPath + "/" + System.currentTimeMillis() + ".png";
+                File fileCacheItem = new File(strFilePath);
+
+                try{
+                    fos = new FileOutputStream(fileCacheItem);
+                    captureView.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                    Log.v("check 4 ss : ", "hi");
+                }catch (FileNotFoundException e){
+                    e.printStackTrace();
+                }finally {
+                    Toast.makeText(getActivity(), "캡처완료!", Toast.LENGTH_SHORT).show();
+                }
+
+                Intent share = new Intent(Intent.ACTION_SEND_MULTIPLE);
+                Uri uri = Uri.fromFile(fileCacheItem);
+                Log.v("sharing_intent_name: ", uri.toString());
+                share.putExtra(Intent.EXTRA_STREAM, uri);
+                share.putExtra(Intent.EXTRA_TEXT, uri.toString());
+                share.setType("image/*");
+                share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+                startActivity(Intent.createChooser(share, "Share image using"));
+                Log.v("check 3 ss : ", "hi");
+            }
+        });
 
         user_mbti = rootView.findViewById(R.id.random_user_mbti);
         user_naem = rootView.findViewById(R.id.random_user_name);
         user_id = rootView.findViewById(R.id.random_user_id);
         user_image = rootView.findViewById(R.id.random_user_image);
+        extra_text = rootView.findViewById(R.id.extra_text);
+        extra_text.setText("과거 데이터를 합친 \n분석결과 입니다.");
+
+        user_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent2 = new Intent(Intent.ACTION_VIEW);
+                Uri uri =Uri.parse("https://www.16personalities.com/personality-types");
+                intent2.setData(uri);
+                getActivity().startActivity(intent2);
+            }
+        });
 
         pieChart = rootView.findViewById(R.id.piechart);
         pieChart.setUsePercentValues(true);
@@ -233,6 +317,11 @@ public class FragExample4 extends Fragment {
             default:
                 break;
         }
+
+//        Description description = new Description();
+//        description.setText("카톡데이터로 보는 나의 성향"); //라벨
+//        description.setTextSize(15);
+//        pieChart.setDescription(description);
 
         pieChart.animateY(1000, Easing.EasingOption.EaseInOutCubic); //애니메이션
 
