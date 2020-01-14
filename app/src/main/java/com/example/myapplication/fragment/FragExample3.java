@@ -65,6 +65,10 @@ public class FragExample3 extends Fragment {
     private Button testMBTI;
     private Uri kakaoUri = null;
 
+    PieChart pieChart;
+
+    String  i_ration, e_ration,s_ration,n_ration,t_ration,f_ration,j_ration,p_ration;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -88,6 +92,8 @@ public class FragExample3 extends Fragment {
         Intent intent = activity.getIntent();
         String action = intent.getAction();
         String type = intent.getType();
+
+        pieChart = view.findViewById(R.id.piechart_1);
 
         testMBTI.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,9 +133,7 @@ public class FragExample3 extends Fragment {
                                 return;
                             }
                             mbtiView.setText(response.body().getType());
-
                         }
-
                         @Override
                         public void onFailure(Call<MbtiData> call, Throwable t) {
                             Log.d("on Failure", t.toString());
@@ -155,12 +159,62 @@ public class FragExample3 extends Fragment {
             @Override
             public void onResponse(Call<LoginData> call, Response<LoginData> response) {
                 if (response.isSuccessful()) {
+
                     List<MbtiData> mbti = response.body().getMbti();
 
                     if (!mbti.isEmpty()) {
                         mbtiView.setText(mbti.get(mbti.size() - 1).getType());
-                    }
 
+                        pieChart.setUsePercentValues(true);
+                        pieChart.getDescription().setEnabled(false);
+                        pieChart.setExtraOffsets(5, 10, 5, 5);
+
+                        pieChart.setDragDecelerationFrictionCoef(0.95f);
+
+                        pieChart.setDrawHoleEnabled(false);
+                        pieChart.setHoleColor(Color.WHITE);
+                        pieChart.setTransparentCircleRadius(61f);
+
+                        ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
+
+                        LoginData data = response.body();
+                        if (data.getMbti().size() != 0) {
+                            i_ration = data.getMbti().get(mbti.size() - 1).getRatio_I();
+                            e_ration = String.valueOf((100 - Integer.parseInt(i_ration)));
+
+                            n_ration = data.getMbti().get(mbti.size() - 1).getRatio_N();
+                            s_ration = String.valueOf((100 - Integer.parseInt(n_ration)));
+
+                            j_ration = data.getMbti().get(mbti.size() - 1).getRatio_J();
+                            p_ration = String.valueOf((100 - Integer.parseInt(j_ration)));
+
+                            t_ration = data.getMbti().get(mbti.size() - 1).getRatio_T();
+                            f_ration = String.valueOf((100 - Integer.parseInt(t_ration)));
+                        }
+
+                        yValues.add(new PieEntry(Integer.parseInt(i_ration), "I"));
+                        yValues.add(new PieEntry(Integer.parseInt(e_ration), "E"));
+                        yValues.add(new PieEntry(Integer.parseInt(s_ration), "S"));
+                        yValues.add(new PieEntry(Integer.parseInt(n_ration), "N"));
+                        yValues.add(new PieEntry(Integer.parseInt(t_ration), "T"));
+                        yValues.add(new PieEntry(Integer.parseInt(f_ration), "F"));
+                        yValues.add(new PieEntry(Integer.parseInt(j_ration), "J"));
+                        yValues.add(new PieEntry(Integer.parseInt(p_ration), "P"));
+
+
+                        pieChart.animateY(1000, Easing.EasingOption.EaseInOutCubic); //애니메이션
+
+                        PieDataSet dataSet = new PieDataSet(yValues, "");
+                        dataSet.setSliceSpace(3f);
+                        dataSet.setSelectionShift(5f);
+                        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+
+                        PieData data2 = new PieData((dataSet));
+                        data2.setValueTextSize(10f);
+                        data2.setValueTextColor(Color.YELLOW);
+
+                        pieChart.setData(data2);
+                    }
 
                 }
 

@@ -69,8 +69,7 @@
             <TextView
                 android:layout_width="341dp"
                 android:layout_height="70dp"
-                android:layout_marginLeft="33dp"
-                android:layout_marginBottom="20dp"
+                android:layout_gravity="center"
                 android:background="@drawable/grid_item_radius_4"
                 android:gravity="center"
                 android:text="현재 개설된 채팅방"
