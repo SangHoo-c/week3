@@ -17,18 +17,11 @@ import com.example.myapplication.R;
 public class FragExample extends Fragment {
 
     private Context mContext;
-    SharedPreferences pref;
-    String accountName;
+//    SharedPreferences pref = requireContext().getSharedPreferences("pref",Context.MODE_PRIVATE);
+////    String accountName = pref.getString("key1", "hi");
 
     TextView textView1;
 
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        SharedPreferences pref = requireContext().getSharedPreferences("pref", Context.MODE_PRIVATE);
-        accountName = pref.getString("key1", "");
-    }
 
     @Nullable
     @Override
@@ -36,7 +29,7 @@ public class FragExample extends Fragment {
 
         View rootView = inflater.inflate(R.layout.activity_frag_ex1, null);
         textView1 = rootView.findViewById(R.id.textView);
-        textView1.setText(accountName + "1");
+//        textView1.setText(accountName + "1");
 
         return rootView;
     }

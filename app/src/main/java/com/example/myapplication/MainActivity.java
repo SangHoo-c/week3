@@ -11,7 +11,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -113,19 +112,12 @@ public class MainActivity extends AppCompatActivity {
         switch (index) {
             case 0:
                 viewPager.setCurrentItem(0);
-//                main_text.setText("검사결과");
                 break;
             case 1:
                 viewPager.setCurrentItem(1);
-//                main_text.setText("친구찾기");
                 break;
             case 2:
                 viewPager.setCurrentItem(2);
-//                main_text.setText("메세지");
-                break;
-            case 3:
-                viewPager.setCurrentItem(3);
-//                main_text.setText("내정보");
                 break;
         }
     }

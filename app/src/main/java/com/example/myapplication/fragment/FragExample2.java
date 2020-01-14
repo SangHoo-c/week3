@@ -59,14 +59,15 @@ public class FragExample2 extends Fragment implements OnMapReadyCallback, Google
 
     //user database 에 저장된 전체 사용자의 db
     final String[] location = new String[]{"카이스트 소망관", "카이스트 n1","카이스트 성심관", "카이스트 사랑관", "카이스트 도서분관", "카이스트 아름관", "카이스트 진리관", "카이스트 기계동", "카이스트 본관"};
-    final String[] mbti = new String[]{"ENFJ", "INFJ", "INTP", "ISFJ", "INJF", "INTJ", "ISTP", "ISFP", "ENTP"};
+    final String[] mbti = new String[]{"ENFJ", "INFJ", "INTP", "ISFJ", "INFJ", "INTJ", "ISTP", "ISFP", "ENTP"};
     final String[] name = new String[]{"lee", "park", "jung","lee2", "park2", "jung2","lee3", "park3", "jung3"};
 
     String tmp_mbti="";
     //로그인한 사용자의 MBTI
+    //db 에서 가져와야하는 데이터
     String person_mbti = "ENFJ";
 
-  //  Location_cus[] location_ar_cus = new Location_cus[100];
+    //  Location_cus[] location_ar_cus = new Location_cus[100];
 
 
     double cur_lat, cur_long, idx_lat, idx_long;
@@ -84,8 +85,8 @@ public class FragExample2 extends Fragment implements OnMapReadyCallback, Google
 
     AlertDialog.Builder builder;
     AlertDialog alertDialog;
-    TextView user_name, user_mbti;
-    ImageView user_send_message, user_mbti_img;
+    TextView user_name, user_mbti,textView_1;
+    ImageView user_send_message, user_mbti_img, user_home;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -113,16 +114,20 @@ public class FragExample2 extends Fragment implements OnMapReadyCallback, Google
         Log.d("size ar", String.valueOf(arrayList.size()));
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = (ViewGroup) inflater.inflate(R.layout.activity_frag_ex2,container, false);
         final View custom_dialog = inflater.inflate(R.layout.activity_custom_dialog,rootView.findViewById(R.id.layout_root));
 
+
+        textView_1 = rootView.findViewById(R.id.textView_1);
         //custom dialog 항목들을 해당 maker 에 맞는 친구들로 바꿔줘야하 한다,
         user_mbti = custom_dialog.findViewById(R.id.user_mbti);
         user_name = custom_dialog.findViewById(R.id.user_name);
         user_send_message = custom_dialog.findViewById(R.id.user_send);
         user_mbti_img = custom_dialog.findViewById(R.id.user_image);
+        user_home = custom_dialog.findViewById(R.id.user_home);
 
         //cutom dialog 설정 해주는 과정
         builder = new AlertDialog.Builder(getActivity());
@@ -136,6 +141,19 @@ public class FragExample2 extends Fragment implements OnMapReadyCallback, Google
             public void onClick(View v) {
                 //message 보내는 위치
                 Toast.makeText(getActivity(), "hi", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        user_home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "hi2", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), Dialog_event_activity.class);
+
+                //Dialog event activity 로 보내는 데이터,
+                intent.putExtra("key_i", tmp_mbti);
+                Log.d("send_account_name", tmp_mbti);
+                getActivity().startActivity(intent);
             }
         });
 
@@ -162,7 +180,7 @@ public class FragExample2 extends Fragment implements OnMapReadyCallback, Google
             public void onClick(View v) {
                 if(flag == 0){
                     mMap.clear();
-
+                    textView_1.setText("나와 비슷한");
                     for(int i=0; i< arrayList.size(); i++){
 
                         String tmp = arrayList.get(i).getUser_mbti();
@@ -207,7 +225,7 @@ public class FragExample2 extends Fragment implements OnMapReadyCallback, Google
                 }
                 else if(flag ==1){
                     mMap.clear();
-
+                    textView_1.setText("나와 다른");
                     for(int i=0; i< arrayList.size(); i++){
 
                         String tmp = arrayList.get(i).getUser_mbti();
@@ -399,8 +417,8 @@ public class FragExample2 extends Fragment implements OnMapReadyCallback, Google
             case  "istp":
                 user_mbti_img.setImageResource(R.drawable.istp);
                 break;
-             default:
-                 break;
+            default:
+                break;
         }
         alertDialog.show();
 
