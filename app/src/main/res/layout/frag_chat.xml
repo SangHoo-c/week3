@@ -6,6 +6,14 @@
     tools:ignore="MissingDefaultResource">
 
 
+<ImageView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="top" />
+
+
+=======
+>>>>>>> 3077cae6909e335900f3a1b1f2b3967d784ce53a
     <ListView
         android:id="@+id/chat_list"
         android:layout_width="wrap_content"
