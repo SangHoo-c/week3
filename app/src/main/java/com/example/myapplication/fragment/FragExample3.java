@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,6 +30,12 @@ import com.example.myapplication.R;
 import com.example.myapplication.server.LoginData;
 import com.example.myapplication.server.MbtiData;
 import com.example.myapplication.server.RetrofitConnection;
+import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.io.Console;
 import java.io.File;
@@ -37,6 +44,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.MediaType;
@@ -115,16 +123,17 @@ public class FragExample3 extends Fragment {
 
                             if (!response.isSuccessful()) {
                                 Log.d("response not successful", response.toString());
-                                setView();
+                                setView(view);
                                 return;
                             }
                             mbtiView.setText(response.body().getType());
+
                         }
 
                         @Override
                         public void onFailure(Call<MbtiData> call, Throwable t) {
                             Log.d("on Failure", t.toString());
-                            setView();
+                            setView(view);
                         }
                     });
 
@@ -135,13 +144,12 @@ public class FragExample3 extends Fragment {
                 }
             }
         });
-
         kakaoUri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
-        setView();
+        setView(view);
 
     }
 
-    private void setView() {
+    private void setView(View view) {
         RetrofitConnection retrofitConnection = new RetrofitConnection();
         retrofitConnection.server.getUser(accountName).enqueue(new Callback<LoginData>() {
             @Override
@@ -152,7 +160,10 @@ public class FragExample3 extends Fragment {
                     if (!mbti.isEmpty()) {
                         mbtiView.setText(mbti.get(mbti.size() - 1).getType());
                     }
+
+
                 }
+
             }
 
             @Override

@@ -1,21 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/mbti"
-        android:text="카카오톡 대화 내보내기를 통해 대화 내용을 저장 후, 카톡내용 가져오기 버튼을 누르세요!"
-        android:gravity="center_horizontal"
-        android:textSize="50dp"
-        />
-    <Button
-        android:id="@+id/getChat"
+    <RelativeLayout
+        android:id="@+id/layout_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="검사하기"
-        />
+        android:layout_marginTop="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
 
-</LinearLayout>
+        android:background="@drawable/grid_item_radius_2"
+        >
+
+        <TextView
+            android:padding="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/mbti"
+            android:text="카카오톡 대화 내보내기를 통해 대화 내용을 저장 후,\n 카톡내용 가져오기 버튼을 누르세요!"
+            android:gravity="center_horizontal"
+            android:breakStrategy="balanced"
+            android:textSize="30dp"
+            android:textColor="@color/insta_ligth_black"
+            />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_marginTop="10dp"
+        android:id="@+id/layout_2"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/layout_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        >
+        <Button
+            android:id="@+id/getChat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="검사하기"
+            />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_3"
+        android:layout_below="@id/layout_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/layout_4"
+        >
+        <com.github.mikephil.charting.charts.PieChart
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:id="@+id/piechart_1">
+
+        </com.github.mikephil.charting.charts.PieChart>
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:id="@+id/piechart_2">
+
+        </com.github.mikephil.charting.charts.PieChart>
+
+    </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/layout_5"
+            android:layout_below="@id/layout_4"
+            >
+            <com.github.mikephil.charting.charts.PieChart
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:id="@+id/piechart_3">
+
+            </com.github.mikephil.charting.charts.PieChart>
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:id="@+id/piechart_4">
+
+            </com.github.mikephil.charting.charts.PieChart>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>
