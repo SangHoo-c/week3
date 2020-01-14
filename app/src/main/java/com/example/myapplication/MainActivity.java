@@ -50,20 +50,6 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
 
-        Button logout = findViewById(R.id.logout);
-        logout.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                SharedPreferences.Editor editor = pref.edit();
-                editor.remove("key1");
-                editor.commit();
-                startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                finish();
-            }
-        });
-
 //        main_text = findViewById(R.id.main_Text);
 //        main_text.setText("검사결과");
 

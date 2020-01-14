@@ -55,6 +55,7 @@ public class FragExample2 extends Fragment implements OnMapReadyCallback, Google
     TextView textView1, textView2;
     Button button;
     String ex1 = "카이스트";
+    String user = "Lee";
     ViewGroup rootView;
 
     //user database 에 저장된 전체 사용자의 db
@@ -63,6 +64,7 @@ public class FragExample2 extends Fragment implements OnMapReadyCallback, Google
     final String[] name = new String[]{"lee", "park", "jung","lee2", "park2", "jung2","lee3", "park3", "jung3"};
 
     String tmp_mbti="";
+    String tmp_user_name ="";
     //로그인한 사용자의 MBTI
     //db 에서 가져와야하는 데이터
     String person_mbti = "ENFJ";
@@ -141,8 +143,10 @@ public class FragExample2 extends Fragment implements OnMapReadyCallback, Google
             public void onClick(View v) {
                 //message 보내는 위치
                 Toast.makeText(getActivity(), "hi", Toast.LENGTH_SHORT).show();
-
-
+                Intent intent = new Intent(getActivity(), ChatActivity.class);
+                intent.putExtra("chatName", tmp_user_name);
+                intent.putExtra("userName", user);
+                getActivity().startActivity(intent);
 
             }
         });
@@ -367,6 +371,7 @@ public class FragExample2 extends Fragment implements OnMapReadyCallback, Google
 
         Toast.makeText(getActivity(), marker.getTitle(), Toast.LENGTH_SHORT).show();
         //custome dialog 띄어주기
+        tmp_user_name = marker.getTitle();
         user_name.setText(marker.getTitle());
         user_mbti.setText(marker.getSnippet());
 
