@@ -205,7 +205,7 @@ public class FragExample2 extends Fragment implements OnMapReadyCallback, Google
                             mMap.addMarker(markerOptions);
 
                             CircleOptions circle2_5KM = new CircleOptions().center(new LatLng(cur_lat , cur_long))
-                                    .radius(1500)
+                                    .radius(2500)
                                     .strokeWidth(0f)
                                     .fillColor(0x220000FF);
                             mMap.addCircle(circle2_5KM);
@@ -252,7 +252,7 @@ public class FragExample2 extends Fragment implements OnMapReadyCallback, Google
                             mMap.addMarker(markerOptions);
 
                             CircleOptions circle2_5KM = new CircleOptions().center(new LatLng(cur_lat , cur_long))
-                                    .radius(1500)
+                                    .radius(2500)
                                     .strokeWidth(0f)
                                     .fillColor(0x22FFD500);
                             mMap.addCircle(circle2_5KM);
@@ -303,7 +303,7 @@ public class FragExample2 extends Fragment implements OnMapReadyCallback, Google
                                     idx_long = findGeoPoint(getActivity(), other.getAddress()).getLongitude();
                                     Log.d("idx_lat", String.valueOf(idx_lat));
                                     Log.d("cur_lat", String.valueOf(cur_lat));
-                                    if (distance(cur_lat, cur_long, idx_lat, idx_long, "kilometer") < 2.5) {
+                                    if (distance(cur_lat, cur_long, idx_lat, idx_long, "kilometer") < 2.5 && other.getMbti().isEmpty() == false) {
                                         location_cus.setUserId(other.getId());
                                         location_cus.setUser_name(other.getName());
                                         if (other.getMbti().size() == 0) location_cus.setUser_mbti("");
@@ -420,6 +420,9 @@ public class FragExample2 extends Fragment implements OnMapReadyCallback, Google
 
         tmp_mbti = friends.get(idx).getUser_mbti().toLowerCase();
         Log.d("hellsdf",tmp_mbti);
+        if (tmp_mbti.isEmpty()) {
+            user_mbti_img.setImageResource(0);
+        }
         switch (tmp_mbti){
             case  "enfj":
                 user_mbti_img.setImageResource(R.drawable.enfj);
