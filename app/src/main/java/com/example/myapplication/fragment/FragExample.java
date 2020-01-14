@@ -1,5 +1,6 @@
 package com.example.myapplication.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,11 +9,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -65,9 +68,6 @@ public class FragExample extends Fragment {
                 if (user_edit.getText().toString().equals("") || user_chat.getText().toString().equals(""))
                     return;
 
-
-
-
                 Intent intent = new Intent(getActivity(), ChatActivity.class);
                 intent.putExtra("chatName", user_chat.getText().toString());
                 intent.putExtra("userName", user_edit.getText().toString());
@@ -86,10 +86,16 @@ public class FragExample extends Fragment {
         chat_list.setAdapter(adapter);
 
         //item click listner
-        chat_list.setOnClickListener(new View.OnClickListener() {
+        chat_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getActivity(), "hihih", Toast.LENGTH_SHORT).show();
 
+                Intent intent = new Intent(getActivity(), ChatActivity.class);
+                intent.putExtra("chatName", user_chat.getText().toString());
+                intent.putExtra("userName", user_edit.getText().toString());
+                getActivity().setResult(Activity.RESULT_OK, intent);
+                getActivity().finish();
             }
         });
 

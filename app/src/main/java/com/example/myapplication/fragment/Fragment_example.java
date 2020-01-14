@@ -1,9 +1,11 @@
 package com.example.myapplication.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
@@ -76,6 +78,19 @@ public class Fragment_example extends Fragment {
                 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1);
         chat_list.setAdapter(adapter);
 
+        chat_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getActivity(), "hihih", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), ChatActivity.class);
+                intent.putExtra("chatName", "son");
+                intent.putExtra("userName", "user1");
+                getActivity().startActivity(intent);
+            }
+        });
+
+
+
         // 데이터 받아오기 및 어댑터 데이터 추가 및 삭제 등..리스너 관리
         databaseReference.child("chat").addChildEventListener(new ChildEventListener() {
             @Override
@@ -106,7 +121,5 @@ public class Fragment_example extends Fragment {
         });
 
     }
-
-
 
 }

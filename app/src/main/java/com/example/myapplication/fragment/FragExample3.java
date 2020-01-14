@@ -211,7 +211,7 @@ public class FragExample3 extends Fragment {
 
                         PieData data2 = new PieData((dataSet));
                         data2.setValueTextSize(10f);
-                        data2.setValueTextColor(Color.YELLOW);
+                        data2.setValueTextColor(Color.GRAY);
 
                         pieChart.setData(data2);
                     }
