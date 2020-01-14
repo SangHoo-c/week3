@@ -30,16 +30,6 @@ public class FragExample4 extends Fragment {
         accountName = pref.getString("key1", "");
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-        View rootView = inflater.inflate(R.layout.activity_frag_ex4, null);
-        textView1 = rootView.findViewById(R.id.textView);
-        textView1.setText(accountName + "1");
-
-        return rootView;
-    }
 
 
 }

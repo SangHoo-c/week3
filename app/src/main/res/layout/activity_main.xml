@@ -29,6 +29,12 @@
         android:id="@+id/viewpager_id">
     </androidx.viewpager.widget.ViewPager>
 
+    <Button
+        android:id="@+id/logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="로그아웃"/>
+
     <com.google.android.material.tabs.TabLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -39,4 +45,6 @@
         app:tabIndicatorColor="#242d3f"
         android:id="@+id/tablayout_id">
     </com.google.android.material.tabs.TabLayout>
+
+
 </androidx.appcompat.widget.LinearLayoutCompat>
