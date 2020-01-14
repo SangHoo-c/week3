@@ -1,6 +1,9 @@
 package com.example.myapplication.google_map;
 
-public class Location_cus {
+import java.io.Serializable;
+
+public class Location_cus implements Serializable {
+    private String userId;
     private String User_name = "";
     private String User_mbti = "";
     private Double Latitude;
@@ -37,5 +40,13 @@ public class Location_cus {
 
     public void setLongitude(Double longitude) {
         Longitude = longitude;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

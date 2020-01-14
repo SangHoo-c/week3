@@ -16,6 +16,9 @@ public interface RetrofitInterface {
     @GET("login/user/{id}")
     Call<LoginData> getUser(@Path("id") String id);
 
+    @GET("login/otherUser/{id}")
+    Call<List<LoginData>> getOthers(@Path("id") String id);
+
     @POST("login/login")
     Call<LoginData> login(@Body LoginData user);
 

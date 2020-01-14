@@ -25,7 +25,9 @@ import androidx.fragment.app.Fragment;
 import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.login.LoginActivity;
+import com.example.myapplication.server.LoginData;
 import com.example.myapplication.server.MbtiData;
+import com.example.myapplication.server.RetrofitConnection;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
@@ -40,10 +42,13 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class FragExample4 extends Fragment {
 
     private Context mContext;
-    SharedPreferences pref;
     String accountName;
     //accountName 을 기준으로 유저 디비에서 mbti 성격을 가져온다
 
@@ -55,7 +60,7 @@ public class FragExample4 extends Fragment {
 
 
     //db 에서 가져온 데이터를 여기서 사용해야한다.
-    String[] user_mbti_past = new String[]{"INFJ", "ENFJ", "ENFJ", "INFJ", "INFJ"};
+    ArrayList<String> user_mbti_past = new ArrayList<>();
     //enfj : 0, enfp : 1 , entj :  2,
     // entp : 3 , esfj  : 4 , esfp : 5, estj : 6,
     // estp : 7 , infj : 8,  infp : 9 ,
@@ -157,187 +162,215 @@ public class FragExample4 extends Fragment {
             }
         });
 
+        SharedPreferences pref = getContext().getSharedPreferences("pref", Context.MODE_PRIVATE);
+        accountName = pref.getString("key1", "");
         user_mbti = rootView.findViewById(R.id.random_user_mbti);
         user_naem = rootView.findViewById(R.id.random_user_name);
         user_id = rootView.findViewById(R.id.random_user_id);
         user_image = rootView.findViewById(R.id.random_user_image);
         extra_text = rootView.findViewById(R.id.extra_text);
+
+        return rootView;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         extra_text.setText("과거 데이터를 합친 \n분석결과 입니다.");
+        user_id.setText(accountName);
 
-        user_image.setOnClickListener(new View.OnClickListener() {
+        RetrofitConnection retrofitConnection = new RetrofitConnection();
+        retrofitConnection.server.getUser(accountName).enqueue(new Callback<LoginData>() {
             @Override
-            public void onClick(View v) {
-                Intent intent2 = new Intent(Intent.ACTION_VIEW);
-                Uri uri =Uri.parse("https://www.16personalities.com/personality-types");
-                intent2.setData(uri);
-                getActivity().startActivity(intent2);
-            }
-        });
+            public void onResponse(Call<LoginData> call, Response<LoginData> response) {
+                if (response.isSuccessful()) {
+                    user_image.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent2 = new Intent(Intent.ACTION_VIEW);
+                            Uri uri =Uri.parse("https://www.16personalities.com/personality-types");
+                            intent2.setData(uri);
+                            getActivity().startActivity(intent2);
+                        }
+                    });
 
-        pieChart = rootView.findViewById(R.id.piechart);
-        pieChart.setUsePercentValues(true);
-        pieChart.getDescription().setEnabled(false);
-        pieChart.setExtraOffsets(5,10,5,5);
+                    LoginData loginData = response.body();
 
-        pieChart.setDragDecelerationFrictionCoef(0.95f);
+                    user_naem.setText(loginData.getName());
+                    if (loginData.getMbti().size() != 0) user_mbti.setText(loginData.getMbti().get(loginData.getMbti().size() - 1).getType());
+                    else user_mbti.setText("");
 
-        pieChart.setDrawHoleEnabled(false);
-        pieChart.setHoleColor(Color.WHITE);
-        pieChart.setTransparentCircleRadius(61f);
+                    for (MbtiData mbtiData : loginData.getMbti()) {
+                        user_mbti_past.add(mbtiData.getType());
+                    }
 
-        ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
+                    pieChart = rootView.findViewById(R.id.piechart);
+                    pieChart.setUsePercentValues(true);
+                    pieChart.getDescription().setEnabled(false);
+                    pieChart.setExtraOffsets(5,10,5,5);
 
-        //배열을 참조하며, 자신의 mbti 갯수를 센다
-        for(int i=0; i< user_mbti_past.length; i++){
-            cmp_mbti = user_mbti_past[i].toLowerCase();
-            Log.d("checking...mbti", cmp_mbti);
-            switch (cmp_mbti){
-                case  "enfj":
-                    user_mbti_num[0] ++;
-                    break;
-                case  "enfp":
-                    user_mbti_num[1] ++;
-                    break;
-                case  "entj":
-                    user_mbti_num[2] ++;
-                    break;
-                case  "entp":
-                    user_mbti_num[3] ++;
-                    break;
-                case  "esfj":
-                    user_mbti_num[4] ++;
-                    break;
-                case  "esfp":
-                    user_mbti_num[5] ++;
-                    break;
-                case  "estj":
-                    user_mbti_num[6] ++;
-                    break;
-                case  "estp":
-                    user_mbti_num[7] ++;
-                    break;
-                case  "infj":
-                    user_mbti_num[8] ++;
-                    break;
-                case  "infp":
-                    user_mbti_num[9] ++;
-                    break;
-                case  "intj":
-                    user_mbti_num[10] ++;
-                    break;
-                case  "intp":
-                    user_mbti_num[11] ++;
-                    break;
-                case  "isfj":
-                    user_mbti_num[12] ++;
-                    break;
-                case  "isfp":
-                    user_mbti_num[13] ++;
-                    break;
-                case  "istj":
-                    user_mbti_num[14] ++;
-                    break;
-                case  "istp":
-                    user_mbti_num[15] ++;
-                    break;
-                default:
-                    break;
-            }
-        }
-        Log.d("checking_max_indx", String.valueOf(max_cnt));
+                    pieChart.setDragDecelerationFrictionCoef(0.95f);
 
-        for(int i=0; i<user_mbti_num.length; i++){
-            if(user_mbti_num[i] !=0){
-                yValues.add(new PieEntry(user_mbti_num[i],user_mbti_string[i]));
-            }
-        }
+                    pieChart.setDrawHoleEnabled(false);
+                    pieChart.setHoleColor(Color.WHITE);
+                    pieChart.setTransparentCircleRadius(61f);
 
-        //배열을 참조하며, 가장 빈도수가 높은 mbti 갯수를 센다.
-        for(int i=0; i<user_mbti_num.length; i++){
-            if(max_cnt < user_mbti_num[i]){
-                max_cnt = user_mbti_num[i];
-                idx_cnt = i;
-            }
-            Log.d("checking_max_indx2", String.valueOf(idx_cnt));
-        }
-        //빈도수가 가장 높은 인덱스인 idx_cnt 를 바탕으로 데이터를 넣어준다.
-        user_mbti.setText(user_mbti_string[idx_cnt].toUpperCase());
+                    ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
 
-        //같은 방법으로 이미지를 넣어준다.
-        idx_cnt_string = user_mbti_string[idx_cnt];
-        switch (idx_cnt_string){
-            case  "enfj":
-                user_image.setImageResource(R.drawable.enfj);
-                break;
-            case  "enfp":
-                user_image.setImageResource(R.drawable.enfp);
-                break;
-            case  "entj":
-                user_image.setImageResource(R.drawable.entj);
-                break;
-            case  "entp":
-                user_image.setImageResource(R.drawable.entp);
-                break;
-            case  "esfj":
-                user_image.setImageResource(R.drawable.esfj);
-                break;
-            case  "esfp":
-                user_image.setImageResource(R.drawable.esfp);
-                break;
-            case  "estj":
-                user_image.setImageResource(R.drawable.estj);
-                break;
-            case  "estp":
-                user_image.setImageResource(R.drawable.estp);
-                break;
-            case  "infj":
-                user_image.setImageResource(R.drawable.infj);
-                break;
-            case  "infp":
-                user_image.setImageResource(R.drawable.infp);
-                break;
-            case  "intj":
-                user_image.setImageResource(R.drawable.intj);
-                break;
-            case  "intp":
-                user_image.setImageResource(R.drawable.intp);
-                break;
-            case  "isfj":
-                user_image.setImageResource(R.drawable.isfj);
-                break;
-            case  "isfp":
-                user_image.setImageResource(R.drawable.isfp);
-                break;
-            case  "istj":
-                user_image.setImageResource(R.drawable.istj);
-                break;
-            case  "istp":
-                user_image.setImageResource(R.drawable.istp);
-                break;
-            default:
-                break;
-        }
+                    //배열을 참조하며, 자신의 mbti 갯수를 센다
+                    for(int i=0; i< user_mbti_past.size(); i++){
+                        cmp_mbti = user_mbti_past.get(i).toLowerCase();
+                        Log.d("checking...mbti", cmp_mbti);
+                        switch (cmp_mbti){
+                            case  "enfj":
+                                user_mbti_num[0] ++;
+                                break;
+                            case  "enfp":
+                                user_mbti_num[1] ++;
+                                break;
+                            case  "entj":
+                                user_mbti_num[2] ++;
+                                break;
+                            case  "entp":
+                                user_mbti_num[3] ++;
+                                break;
+                            case  "esfj":
+                                user_mbti_num[4] ++;
+                                break;
+                            case  "esfp":
+                                user_mbti_num[5] ++;
+                                break;
+                            case  "estj":
+                                user_mbti_num[6] ++;
+                                break;
+                            case  "estp":
+                                user_mbti_num[7] ++;
+                                break;
+                            case  "infj":
+                                user_mbti_num[8] ++;
+                                break;
+                            case  "infp":
+                                user_mbti_num[9] ++;
+                                break;
+                            case  "intj":
+                                user_mbti_num[10] ++;
+                                break;
+                            case  "intp":
+                                user_mbti_num[11] ++;
+                                break;
+                            case  "isfj":
+                                user_mbti_num[12] ++;
+                                break;
+                            case  "isfp":
+                                user_mbti_num[13] ++;
+                                break;
+                            case  "istj":
+                                user_mbti_num[14] ++;
+                                break;
+                            case  "istp":
+                                user_mbti_num[15] ++;
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    Log.d("checking_max_indx", String.valueOf(max_cnt));
+
+                    for(int i=0; i<user_mbti_num.length; i++){
+                        if(user_mbti_num[i] !=0){
+                            yValues.add(new PieEntry(user_mbti_num[i],user_mbti_string[i]));
+                        }
+                    }
+
+                    //배열을 참조하며, 가장 빈도수가 높은 mbti 갯수를 센다.
+                    for(int i=0; i<user_mbti_num.length; i++){
+                        if(max_cnt < user_mbti_num[i]){
+                            max_cnt = user_mbti_num[i];
+                            idx_cnt = i;
+                        }
+                        Log.d("checking_max_indx2", String.valueOf(idx_cnt));
+                    }
+                    //빈도수가 가장 높은 인덱스인 idx_cnt 를 바탕으로 데이터를 넣어준다.
+                    user_mbti.setText(user_mbti_string[idx_cnt].toUpperCase());
+
+                    //같은 방법으로 이미지를 넣어준다.
+                    idx_cnt_string = user_mbti_string[idx_cnt];
+                    switch (idx_cnt_string){
+                        case  "enfj":
+                            user_image.setImageResource(R.drawable.enfj);
+                            break;
+                        case  "enfp":
+                            user_image.setImageResource(R.drawable.enfp);
+                            break;
+                        case  "entj":
+                            user_image.setImageResource(R.drawable.entj);
+                            break;
+                        case  "entp":
+                            user_image.setImageResource(R.drawable.entp);
+                            break;
+                        case  "esfj":
+                            user_image.setImageResource(R.drawable.esfj);
+                            break;
+                        case  "esfp":
+                            user_image.setImageResource(R.drawable.esfp);
+                            break;
+                        case  "estj":
+                            user_image.setImageResource(R.drawable.estj);
+                            break;
+                        case  "estp":
+                            user_image.setImageResource(R.drawable.estp);
+                            break;
+                        case  "infj":
+                            user_image.setImageResource(R.drawable.infj);
+                            break;
+                        case  "infp":
+                            user_image.setImageResource(R.drawable.infp);
+                            break;
+                        case  "intj":
+                            user_image.setImageResource(R.drawable.intj);
+                            break;
+                        case  "intp":
+                            user_image.setImageResource(R.drawable.intp);
+                            break;
+                        case  "isfj":
+                            user_image.setImageResource(R.drawable.isfj);
+                            break;
+                        case  "isfp":
+                            user_image.setImageResource(R.drawable.isfp);
+                            break;
+                        case  "istj":
+                            user_image.setImageResource(R.drawable.istj);
+                            break;
+                        case  "istp":
+                            user_image.setImageResource(R.drawable.istp);
+                            break;
+                        default:
+                            break;
+                    }
 
 //        Description description = new Description();
 //        description.setText("카톡데이터로 보는 나의 성향"); //라벨
 //        description.setTextSize(15);
 //        pieChart.setDescription(description);
 
-        pieChart.animateY(1000, Easing.EasingOption.EaseInOutCubic); //애니메이션
+                    pieChart.animateY(1000, Easing.EasingOption.EaseInOutCubic); //애니메이션
 
-        PieDataSet dataSet = new PieDataSet(yValues,"");
-        dataSet.setSliceSpace(3f);
-        dataSet.setSelectionShift(5f);
-        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+                    PieDataSet dataSet = new PieDataSet(yValues,"");
+                    dataSet.setSliceSpace(3f);
+                    dataSet.setSelectionShift(5f);
+                    dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
 
-        PieData data = new PieData((dataSet));
-        data.setValueTextSize(10f);
-        data.setValueTextColor(Color.YELLOW);
+                    PieData data = new PieData((dataSet));
+                    data.setValueTextSize(10f);
+                    data.setValueTextColor(Color.YELLOW);
 
-        pieChart.setData(data);
+                    pieChart.setData(data);
+                }
+            }
 
-        return rootView;
+            @Override
+            public void onFailure(Call<LoginData> call, Throwable t) {
+
+            }
+        });
     }
-
-
 }

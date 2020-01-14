@@ -2,26 +2,21 @@ package com.example.myapplication;
 
 
 import android.content.Context;
-import android.content.Intent;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.myapplication.fragment.FragExample;
 import com.example.myapplication.fragment.FragExample2;
 import com.example.myapplication.fragment.FragExample3;
 import com.example.myapplication.fragment.FragExample4;
 import com.example.myapplication.fragment.Fragment_example;
-import com.example.myapplication.login.LoginActivity;
 import com.google.android.material.tabs.TabLayout;
 
 
@@ -34,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
 
     public FragExample3 frag1;
     public FragExample2 frag2;
-//    public FragExample frag3;
     public Fragment_example frag3;
     public FragExample4 frag4;
 
@@ -56,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
         //frag1 = new FragExample(accountName);
         frag1 = new FragExample3();
         frag2 = new FragExample2();
-//        frag3 = new FragExample();
         frag3 = new Fragment_example();
         frag4 = new FragExample4();
 

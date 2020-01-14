@@ -132,7 +132,7 @@ public class FragExample3 extends Fragment {
                                 setView(view);
                                 return;
                             }
-                            mbtiView.setText(response.body().getType());
+                            setView(view);
                         }
                         @Override
                         public void onFailure(Call<MbtiData> call, Throwable t) {
