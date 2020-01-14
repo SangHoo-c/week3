@@ -11,7 +11,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +18,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.myapplication.fragment.FragExample;
 import com.example.myapplication.fragment.FragExample2;
+import com.example.myapplication.fragment.FragExample3;
 import com.example.myapplication.fragment.FragExample4;
 import com.example.myapplication.login.LoginActivity;
 import com.google.android.material.tabs.TabLayout;
@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private ViewPagerAdapter adapter;
 
-    public FragExample frag1;
+    public FragExample3 frag1;
     public FragExample2 frag2;
     public FragExample frag3;
     public FragExample4 frag4;
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 //        main_text.setText("검사결과");
 
         //frag1 = new FragExample(accountName);
-        frag1 = new FragExample();
+        frag1 = new FragExample3();
         frag2 = new FragExample2();
         frag3 = new FragExample();
         frag4 = new FragExample4();
@@ -117,19 +117,15 @@ public class MainActivity extends AppCompatActivity {
         switch (index) {
             case 0:
                 viewPager.setCurrentItem(0);
-//                main_text.setText("검사결과");
                 break;
             case 1:
                 viewPager.setCurrentItem(1);
-//                main_text.setText("친구찾기");
                 break;
             case 2:
                 viewPager.setCurrentItem(2);
-//                main_text.setText("메세지");
                 break;
             case 3:
                 viewPager.setCurrentItem(3);
-//                main_text.setText("내정보");
                 break;
         }
     }

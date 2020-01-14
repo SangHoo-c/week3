@@ -1,61 +1,44 @@
 package com.example.myapplication.fragment;
 
-import android.app.Activity;
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.DocumentsContract;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import com.example.myapplication.R;
-import com.example.myapplication.server.LoginData;
-import com.example.myapplication.server.MbtiData;
-import com.example.myapplication.server.RetrofitConnection;
-
-import java.io.Console;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.List;
-
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-import static android.app.Activity.RESULT_OK;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class FragExample extends Fragment {
 
     private Context mContext;
-    private SharedPreferences pref;
+    SharedPreferences pref;
     String accountName;
-    private TextView mbtiView;
-    private Button testMBTI;
-    private Uri kakaoUri = null;
+
+    TextView textView1;
+
+    private EditText user_chat, user_edit;
+    private Button user_next;
+    private ListView chat_list;
+
+    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();//데이터 베이스에서 정의된걸로
+    private DatabaseReference databaseReference = firebaseDatabase.getReference();//데이터 베이스에서 정의된걸로
 
 
     @Override
@@ -68,135 +51,68 @@ public class FragExample extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_frag_ex1, container, false);
-    }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        mbtiView = view.findViewById(R.id.mbti);
-        testMBTI = view.findViewById(R.id.getChat);
+        View rootView = inflater.inflate(R.layout.frag_chat, null);
 
-        Activity activity = getActivity();
-        Intent intent = activity.getIntent();
-        String action = intent.getAction();
-        String type = intent.getType();
-        
-        testMBTI.setOnClickListener(new View.OnClickListener() {
+        user_chat = (EditText) rootView.findViewById(R.id.user_chat);//등록한 이메일로 사용자 표시
+        user_edit = (EditText) rootView.findViewById(R.id.user_edit); //문자 보내는 부분
+        user_next = (Button) rootView.findViewById(R.id. user_next);//전송 버튼
+        chat_list = (ListView)rootView.findViewById(R.id.chat_list);//채팅방 목록
+
+        user_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    if (kakaoUri == null) {
-                        Toast.makeText(requireContext(), "먼저 카카오톡에서 텍스트 파일 내보내기를 통해 파일을 가져와 주세요!", Toast.LENGTH_LONG).show();
-                        return;
-                    }
-                    InputStream is = getContext().getContentResolver().openInputStream(kakaoUri);
-                    kakaoUri = null;
-                    File f = new File(getContext().getExternalCacheDir(), "tmp");
-                    OutputStream os = new FileOutputStream(f);
+                if (user_edit.getText().toString().equals("") || user_chat.getText().toString().equals(""))
+                    return;
 
-                    byte[] b = new byte[2048];
-                    int length;
-
-                    while ((length = is.read(b)) != -1) {
-                        os.write(b, 0, length);
-                    }
-
-                    is.close();
-                    os.close();
-
-                    RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), f);
-
-                    MultipartBody.Part body = MultipartBody.Part.createFormData("tmp", f.getName(), requestBody);
-
-                    RetrofitConnection retrofitConnection = new RetrofitConnection();
-                    retrofitConnection.server.testMbti(accountName, body).enqueue(new Callback<MbtiData>() {
-                        @Override
-                        public void onResponse(Call<MbtiData> call, Response<MbtiData> response) {
-
-                            if (!response.isSuccessful()) {
-                                Log.d("response not successful", response.toString());
-                                setView();
-                                return;
-                            }
-                            mbtiView.setText(response.body().getType());
-                        }
-
-                        @Override
-                        public void onFailure(Call<MbtiData> call, Throwable t) {
-                            Log.d("on Failure", t.toString());
-                            setView();
-                        }
-                    });
-
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                Intent intent = new Intent(getActivity(), ChatActivity.class);
+                intent.putExtra("chatName", user_chat.getText().toString());
+                intent.putExtra("userName", user_edit.getText().toString());
+                startActivity(intent);
             }
         });
+        showChatList();
 
-        kakaoUri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
-        setView();
-
+        return rootView;
     }
 
-    private void setView() {
-        RetrofitConnection retrofitConnection = new RetrofitConnection();
-        retrofitConnection.server.getUser(accountName).enqueue(new Callback<LoginData>() {
-            @Override
-            public void onResponse(Call<LoginData> call, Response<LoginData> response) {
-                if (response.isSuccessful()) {
-                    List<MbtiData> mbti = response.body().getMbti();
 
-                    if (!mbti.isEmpty()) {
-                        mbtiView.setText(mbti.get(mbti.size() - 1).getType());
-                    }
-                }
+    private void showChatList() {
+        // 리스트 어댑터 생성 및 세팅
+        final ArrayAdapter<String> adapter
+
+                = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1);
+        chat_list.setAdapter(adapter);
+
+        // 데이터 받아오기 및 어댑터 데이터 추가 및 삭제 등..리스너 관리
+        databaseReference.child("chat").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Log.e("LOG", "dataSnapshot.getKey() : " + dataSnapshot.getKey());
+                adapter.add(dataSnapshot.getKey());
             }
 
             @Override
-            public void onFailure(Call<LoginData> call, Throwable t) {
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
             }
         });
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 100 && resultCode == RESULT_OK) {
-
-            Log.d("tlqkf", data.getData().getPath());
-            File f = new File(getContext().getExternalCacheDir(), "tmp");
-            try {
-                f.createNewFile();
-                RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), f);
-
-                MultipartBody.Part body = MultipartBody.Part.createFormData("tmp", f.getName(), requestBody);
-
-                RetrofitConnection retrofitConnection = new RetrofitConnection();
-                retrofitConnection.server.testMbti(accountName, body).enqueue(new Callback<MbtiData>() {
-                    @Override
-                    public void onResponse(Call<MbtiData> call, Response<MbtiData> response) {
-                        if (!response.isSuccessful()) {
-                            Log.d("response not successful", response.toString());
-                            return;
-                        }
-                        MbtiData mbtiData = response.body();
-                        mbtiView.setText(mbtiData.getType());
-                    }
-
-                    @Override
-                    public void onFailure(Call<MbtiData> call, Throwable t) {
-                        Log.d("on Failure", t.toString());
-                    }
-                });
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-
-        }
-    }
 
 }

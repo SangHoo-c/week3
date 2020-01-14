@@ -30,10 +30,12 @@
         <activity android:name=".login.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+        <activity android:name=".fragment.Dialog_event_activity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
-
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -48,6 +50,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".login.RegisterActivity"></activity>
+        <activity android:name=".fragment.ChatActivity"></activity>
 
 
     </application>
