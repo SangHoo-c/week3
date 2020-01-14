@@ -39,11 +39,15 @@ public class ChatActivity extends AppCompatActivity {
         chat_edit = (EditText) findViewById(R.id.chat_edit);
         chat_send = (Button) findViewById(R.id.chat_sent);
 
+
+
         // 로그인 화면에서 받아온 유저 이메일 & 채팅방 개설시의 채팅방 이름.
         Intent intent = getIntent();
+//        CHAT_NAME = intent.getExtras().getString("chatName");
+//        USER_NAME = intent.getExtras().getString("userName");
         CHAT_NAME = intent.getStringExtra("chatName");
-        USER_NAME = intent.getStringExtra("username");
-
+        USER_NAME = intent.getStringExtra("userName");
+        Log.d("check_if_it is right ? ", USER_NAME);
         // 채팅 방 입장
         openChat(CHAT_NAME);
 
@@ -55,7 +59,9 @@ public class ChatActivity extends AppCompatActivity {
                     return;
 
                 ChatDTO chat = new ChatDTO(USER_NAME, chat_edit.getText().toString()); //ChatDTO를 이용하여 데이터를 묶는다.
+                Log.d("checki_user_name", chat.getUserName());
                 databaseReference.child("chat").child(CHAT_NAME).push().setValue(chat); // 데이터 푸쉬
+//                databaseReference.child()
                 chat_edit.setText(""); //입력창 초기화
 
             }

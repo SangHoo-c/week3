@@ -141,6 +141,9 @@ public class FragExample2 extends Fragment implements OnMapReadyCallback, Google
             public void onClick(View v) {
                 //message 보내는 위치
                 Toast.makeText(getActivity(), "hi", Toast.LENGTH_SHORT).show();
+
+
+
             }
         });
 

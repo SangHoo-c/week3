@@ -20,6 +20,7 @@ import com.example.myapplication.fragment.FragExample;
 import com.example.myapplication.fragment.FragExample2;
 import com.example.myapplication.fragment.FragExample3;
 import com.example.myapplication.fragment.FragExample4;
+import com.example.myapplication.fragment.Fragment_example;
 import com.example.myapplication.login.LoginActivity;
 import com.google.android.material.tabs.TabLayout;
 
@@ -33,7 +34,8 @@ public class MainActivity extends AppCompatActivity {
 
     public FragExample3 frag1;
     public FragExample2 frag2;
-    public FragExample frag3;
+//    public FragExample frag3;
+    public Fragment_example frag3;
     public FragExample4 frag4;
 
 //    TextView main_text;
@@ -51,7 +53,8 @@ public class MainActivity extends AppCompatActivity {
         //frag1 = new FragExample(accountName);
         frag1 = new FragExample3();
         frag2 = new FragExample2();
-        frag3 = new FragExample();
+//        frag3 = new FragExample();
+        frag3 = new Fragment_example();
         frag4 = new FragExample4();
 
         tabLayout = (TabLayout) findViewById(R.id.tablayout_id);
