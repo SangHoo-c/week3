@@ -17,5 +17,6 @@
 3. 채팅은 firebase 를 사용했으며 real-time 구현이 가능하도록 설계했습니다. 
 
 +) user 의 mbti 타입의 정확도를 위해, 본인을 가장 잘 드러낼 수 있는 대화방 데이터를 사용했습니다. 
+
 +) 본 repository 에는 android java 파일이 upload되어 있습니다. 
 
